@@ -8,3 +8,6 @@ class TestRedPencil(unittest.TestCase):
 
     def test_when_is_red_pencil_passed_greater_second_price_return_false(self):
         self.assertFalse(rp.is_red_pencil((dt(1, 1, 1), 1.00), (dt(1, 2, 1), 2.00)))
+
+    def test_when_is_red_pencil_passed_4_percent_reduction_return_false(self):
+        self.assertFalse(rp.is_red_pencil((dt(1, 1, 1), 1.00), (dt(1, 2, 1), .96)))
