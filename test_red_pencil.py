@@ -20,3 +20,6 @@ class TestRedPencil(unittest.TestCase):
 
     def test_when_is_red_pencil_passed_29_days_after_price_change_return_false(self):
         self.assertFalse(rp.is_red_pencil((dt(1, 1, 1), 1.00), (dt(1, 1, 30), .95)))
+
+    def test_when_is_red_pencil_passed_29_after_red_pencil_return_false(self):
+        self.assertFalse(rp.is_red_pencil((dt(1, 1, 1), 1.00), (dt(1, 2, 1), .95), dt(1, 1, 3)))
