@@ -30,3 +30,7 @@ class TestShouldRedPencilEnd(unittest.TestCase):
 
     def test_when_should_red_pencil_end_passed_more_than_30_percent_original_return_true(self):
         self.assertTrue(rp.should_red_pencil_end((dt(1, 1, 1), 1.31), (dt(1, 2, 1), 1.31), 1.00))
+
+class TestRedPencil(unittest.TestCase):
+    def test_when_is_red_pencil_passed_tuple_return_none(self):
+        self.assertIsNone(rp.red_pencil(()))

@@ -19,3 +19,9 @@ def should_red_pencil_end(last_red_pencil, current, original_price):
     if (original_price - current[1]) / original_price < -.3:
         return True
     return False
+
+def red_pencil(time_price_list):
+    if not isinstance(time_price_list, list):
+        print('red_pencil takes an array of tuples with datetime and price')
+        return None
+    
