@@ -4,8 +4,28 @@ import red_pencil as rp
 
 one_row = [(dt(1, 1, 1), 1.12)]
 two_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00)]
-three_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00), (dt(2, 1, 28), 6.00),] # not 30 for last
-three_rows_return_two = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00), (dt(2, 2, 28), 6.00),]
+three_rows = [ # not 30 days for last
+    (dt(1, 1, 1), 10.00),
+    (dt(2, 1, 1), 8.00),
+    (dt(2, 1, 28), 6.00),
+]
+three_rows_return_two = [
+    (dt(1, 1, 1), 10.00),
+    (dt(2, 1, 2), 8.00),
+    (dt(2, 2, 28), 6.00),
+]
+# returns 0 because price not stable for 30 days on last one
+three_rows_return_none = [
+    (dt(1, 1, 1), 10.00),
+    (dt(1, 1, 2), 9.00),
+    (dt(1, 1, 3), 8.10),
+]
+# return two because price immediately ended promotion
+four_rows_return_two = [
+    (dt(1, 1, 1), 10.00),
+    (dt(1, 1, 2), 8.00),
+    (dt(1, 1, 3), 8.10),
+]
 
 class TestIsRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_arrays_return_none(self):
@@ -41,14 +61,25 @@ class TestRedPencil(unittest.TestCase):
         self.assertIsNone(rp.red_pencil(()))
 
     def test_when_red_pencil_passed_one_row_return_empty_array(self):
-        self.assertEqual(rp.red_pencil(one_row), [])
+        self.assertEqual(rp.red_pencil(one_row), ([], []))
 
     def test_when_red_pencil_passed_two_rows_return_1_red_pencil(self):
-        self.assertEqual(rp.red_pencil(two_rows), [(dt(2, 1, 1), 8.00)])
+        self.assertEqual(rp.red_pencil(two_rows), (
+            [(dt(2, 1, 1), 8.00)], # red pencil start
+            [dt(2, 1, 31)] # red pencil end
+        ))
 
     def test_when_red_pencil_passed_three_rows_return_1_red_pencil(self):
-        self.assertEqual(rp.red_pencil(three_rows), [(dt(2, 1, 1), 8.00)])
+        self.assertEqual(rp.red_pencil(three_rows), (
+            [(dt(2, 1, 1), 8.00)],
+            [dt(2, 1, 31)]
+        ))
 
     def test_when_red_pencil_passed_three_rows_return_2_red_pencil(self):
-        self.assertEqual(rp.red_pencil(three_rows_return_two), [(
-            dt(2, 1, 1), 8.00), (dt(2, 2, 28), 6.00)])
+        self.assertEqual(rp.red_pencil(three_rows_return_two), (
+            [(dt(2, 1, 2), 8.00), (dt(2, 2, 28), 6.00)],
+            [dt(2, 2, 1), dt(2, 3, 30)]
+        ))
+
+    def test_when_red_pencil_passed_three_rows_return_none(self):
+        self.assertEqual(rp.red_pencil(three_rows_return_none), ([], []))

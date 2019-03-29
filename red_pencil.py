@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 def is_red_pencil(last, current, last_red_pencil=None):
     '''Determines if a new red pencil is starting.'''
     if not isinstance(last, tuple) or not isinstance(current, tuple):
@@ -28,11 +30,18 @@ def red_pencil(time_price_list):
     original_price = last_row[1]
     red_pencil_active = False
     red_pencils = []
+    red_pencil_end_dates = []
+
     for row in time_price_list[1:]:
         if (row[0] - last_row[0]).days > 30:
+            # end a red pencil sale at 30 days after start
+            if red_pencils and red_pencil_active:
+                red_pencil_end_dates.append(red_pencils[-1][0] + timedelta(days=30))
             red_pencil_active = False
         if red_pencil_active:
             red_pencil_active = not should_red_pencil_end(last_row, row, original_price)
+            if not red_pencil_active:
+                red_pencil_end_dates.append((row[0]))
         else:
             last_red_pencil_time = None
             if red_pencils:
@@ -41,4 +50,6 @@ def red_pencil(time_price_list):
             if red_pencil_active:
                 red_pencils.append(row)
         last_row = row
-    return red_pencils
+    if red_pencils:
+        red_pencil_end_dates.append(red_pencils[-1][0] + timedelta(days=30))
+    return (red_pencils, red_pencil_end_dates)
