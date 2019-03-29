@@ -18,7 +18,7 @@ def should_red_pencil_end(last_red_pencil, current, original_price):
     '''Determines if red pencil should end prematurely.'''
     if current[1] > last_red_pencil[1]:
         return True
-    if (original_price - current[1]) / original_price < -.3:
+    if (original_price - current[1]) / original_price > .3:
         return True
     return False
 
@@ -37,7 +37,7 @@ def red_pencil(time_price_list):
             # end a red pencil sale at 30 days after start
             if red_pencils and red_pencil_active:
                 red_pencil_end_dates.append(red_pencils[-1][0] + timedelta(days=30))
-            red_pencil_active = False
+                red_pencil_active = False
         if red_pencil_active:
             red_pencil_active = not should_red_pencil_end(last_row, row, original_price)
             if not red_pencil_active:

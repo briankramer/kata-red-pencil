@@ -4,10 +4,14 @@ import red_pencil as rp
 
 one_row = [(dt(1, 1, 1), 1.12)]
 two_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00)]
+two_rows_not_promo_range = [
+    (dt(1, 1, 1), 10.00),
+    (dt(2, 1, 1), 5.00)
+]
 three_rows = [ # not 30 days for last
     (dt(1, 1, 1), 10.00),
     (dt(2, 1, 1), 8.00),
-    (dt(2, 1, 28), 6.00),
+    (dt(2, 1, 28), 7.90),
 ]
 three_rows_return_two = [
     (dt(1, 1, 1), 10.00),
@@ -25,6 +29,18 @@ three_rows_end_early = [
     (dt(1, 1, 1), 10.00),
     (dt(1, 2, 2), 8.00),
     (dt(1, 2, 3), 8.10),
+]
+# check not prolonged by further price decrease
+three_rows_price_decrease = [
+    (dt(1, 1, 1), 10.00),
+    (dt(1, 2, 2), 8.00),
+    (dt(1, 2, 28), 7.50),
+]
+# check price reduced more than 30% original
+three_rows_30_percent = [
+    (dt(1, 1, 1), 10.00),
+    (dt(1, 2, 2), 8.00),
+    (dt(1, 2, 4), 6.50),
 ]
 
 class TestIsRedPencil(unittest.TestCase):
@@ -53,8 +69,8 @@ class TestShouldRedPencilEnd(unittest.TestCase):
     def test_when_should_red_pencil_end_passed_new_greater_return_true(self):
         self.assertTrue(rp.should_red_pencil_end((dt(1, 1, 1), 1.00), (dt(1, 2, 1), 1.01), 0))
 
-    def test_when_should_red_pencil_end_passed_more_than_30_percent_original_return_true(self):
-        self.assertTrue(rp.should_red_pencil_end((dt(1, 1, 1), 1.31), (dt(1, 2, 1), 1.31), 1.00))
+    def test_when_should_red_pencil_end_passed_less_than_30_percent_original_return_true(self):
+        self.assertTrue(rp.should_red_pencil_end((dt(1, 1, 1), 1.31), (dt(1, 2, 1), 1.31), 2.00))
 
 class TestRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_tuple_return_none(self):
@@ -88,4 +104,19 @@ class TestRedPencil(unittest.TestCase):
         self.assertEqual(rp.red_pencil(three_rows_end_early), (
             [(dt(1, 2, 2), 8.00)],
             [dt(1, 2, 3)],
+        ))
+
+    def test_when_red_pencil_passed_two_rows_not_promo_range_return_none(self):
+        self.assertEqual(rp.red_pencil(two_rows_not_promo_range), ([], []))
+
+    def test_when_red_pencil_passed_three_rows_price_decrease_return_1(self):
+        self.assertEqual(rp.red_pencil(three_rows_price_decrease), (
+            [(dt(1, 2, 2), 8.00)],
+            [dt(1, 3, 4)],
+        ))
+
+    def test_when_red_pencil_passed_three_rows_30_percent_return_1(self):
+        self.assertEqual(rp.red_pencil(three_rows_30_percent), (
+            [(dt(1, 2, 2), 8.00)],
+            [dt(1, 2, 4)],
         ))
