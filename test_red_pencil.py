@@ -4,6 +4,8 @@ import red_pencil as rp
 
 one_row = [(dt(1, 1, 1), 1.12)]
 two_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00)]
+three_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00), (dt(2, 1, 28), 6.00),] # not 30 for last
+three_rows_return_two = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00), (dt(2, 2, 28), 6.00),]
 
 class TestIsRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_arrays_return_none(self):
@@ -43,3 +45,10 @@ class TestRedPencil(unittest.TestCase):
 
     def test_when_red_pencil_passed_two_rows_return_1_red_pencil(self):
         self.assertEqual(rp.red_pencil(two_rows), [(dt(2, 1, 1), 8.00)])
+
+    def test_when_red_pencil_passed_three_rows_return_1_red_pencil(self):
+        self.assertEqual(rp.red_pencil(three_rows), [(dt(2, 1, 1), 8.00)])
+
+    def test_when_red_pencil_passed_three_rows_return_2_red_pencil(self):
+        self.assertEqual(rp.red_pencil(three_rows_return_two), [(
+            dt(2, 1, 1), 8.00), (dt(2, 2, 28), 6.00)])

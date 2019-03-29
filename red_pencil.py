@@ -29,13 +29,16 @@ def red_pencil(time_price_list):
     red_pencil_active = False
     red_pencils = []
     for row in time_price_list[1:]:
+        if (row[0] - last_row[0]).days > 30:
+            red_pencil_active = False
         if red_pencil_active:
             red_pencil_active = not should_red_pencil_end(last_row, row, original_price)
         else:
-            last_red_pencil = None
+            last_red_pencil_time = None
             if red_pencils:
-                last_red_pencil = red_pencils[-1]
-            red_pencil_active = is_red_pencil(last_row, row, last_red_pencil)
+                last_red_pencil_time = red_pencils[-1][0]
+            red_pencil_active = is_red_pencil(last_row, row, last_red_pencil_time)
             if red_pencil_active:
                 red_pencils.append(row)
+        last_row = row
     return red_pencils
