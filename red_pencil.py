@@ -12,8 +12,10 @@ def is_red_pencil(last, current, last_red_pencil=None):
         return False
     return True
 
-def should_red_pencil_end(last_red_pencil, current):
+def should_red_pencil_end(last_red_pencil, current, original_price):
     '''Determines if red pencil should end prematurely.'''
     if current[1] > last_red_pencil[1]:
+        return True
+    if (original_price - current[1]) / original_price < -.3:
         return True
     return False
