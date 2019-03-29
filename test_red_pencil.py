@@ -2,6 +2,8 @@ import unittest
 from datetime import datetime as dt
 import red_pencil as rp
 
+one_row = [(dt(1, 1, 1), 1.12)]
+
 class TestIsRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_arrays_return_none(self):
         self.assertIsNone(rp.is_red_pencil([dt(1, 1, 1), 1.00], [dt(1, 1, 1), 1.00]))
@@ -34,3 +36,6 @@ class TestShouldRedPencilEnd(unittest.TestCase):
 class TestRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_tuple_return_none(self):
         self.assertIsNone(rp.red_pencil(()))
+
+    def test_when_red_pencil_passed_one_row_return_empty_array(self):
+        self.assertEqual(rp.red_pencil(one_row), [])

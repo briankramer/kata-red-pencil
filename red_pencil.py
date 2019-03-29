@@ -21,7 +21,19 @@ def should_red_pencil_end(last_red_pencil, current, original_price):
     return False
 
 def red_pencil(time_price_list):
-    if not isinstance(time_price_list, list):
+    if not time_price_list or not isinstance(time_price_list, list):
         print('red_pencil takes an array of tuples with datetime and price')
         return None
-    
+    last_row = time_price_list[0]
+    original_price = last_row[1]
+    red_pencil_active = False
+    red_pencils = []
+    for row in time_price_list[1:]:
+        if red_pencil_active:
+            red_pencil_active = not should_red_pencil_end(last_row, row, original_price)
+        else:
+            if red_pencils:
+                red_pencil_active = is_red_pencil(last_row, row, last_red_pencil)
+            if red_pencil_active:
+                last_red_pencil = row
+    return red_pencils
