@@ -32,8 +32,10 @@ def red_pencil(time_price_list):
         if red_pencil_active:
             red_pencil_active = not should_red_pencil_end(last_row, row, original_price)
         else:
+            last_red_pencil = None
             if red_pencils:
-                red_pencil_active = is_red_pencil(last_row, row, last_red_pencil)
+                last_red_pencil = red_pencils[-1]
+            red_pencil_active = is_red_pencil(last_row, row, last_red_pencil)
             if red_pencil_active:
-                last_red_pencil = row
+                red_pencils.append(row)
     return red_pencils

@@ -3,6 +3,7 @@ from datetime import datetime as dt
 import red_pencil as rp
 
 one_row = [(dt(1, 1, 1), 1.12)]
+two_rows = [(dt(1, 1, 1), 10.00), (dt(2, 1, 1), 8.00)]
 
 class TestIsRedPencil(unittest.TestCase):
     def test_when_is_red_pencil_passed_arrays_return_none(self):
@@ -39,3 +40,6 @@ class TestRedPencil(unittest.TestCase):
 
     def test_when_red_pencil_passed_one_row_return_empty_array(self):
         self.assertEqual(rp.red_pencil(one_row), [])
+
+    def test_when_red_pencil_passed_two_rows_return_1_red_pencil(self):
+        self.assertEqual(rp.red_pencil(two_rows), [(dt(2, 1, 1), 8.00)])
