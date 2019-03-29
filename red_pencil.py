@@ -50,6 +50,6 @@ def red_pencil(time_price_list):
             if red_pencil_active:
                 red_pencils.append(row)
         last_row = row
-    if red_pencils:
+    if red_pencils and len(red_pencils) > len(red_pencil_end_dates):
         red_pencil_end_dates.append(red_pencils[-1][0] + timedelta(days=30))
     return (red_pencils, red_pencil_end_dates)

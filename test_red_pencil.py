@@ -21,10 +21,10 @@ three_rows_return_none = [
     (dt(1, 1, 3), 8.10),
 ]
 # return two because price immediately ended promotion
-four_rows_return_two = [
+three_rows_end_early = [
     (dt(1, 1, 1), 10.00),
-    (dt(1, 1, 2), 8.00),
-    (dt(1, 1, 3), 8.10),
+    (dt(1, 2, 2), 8.00),
+    (dt(1, 2, 3), 8.10),
 ]
 
 class TestIsRedPencil(unittest.TestCase):
@@ -83,3 +83,9 @@ class TestRedPencil(unittest.TestCase):
 
     def test_when_red_pencil_passed_three_rows_return_none(self):
         self.assertEqual(rp.red_pencil(three_rows_return_none), ([], []))
+
+    def test_when_red_pencil_passed_three_rows_end_early_return_1(self):
+        self.assertEqual(rp.red_pencil(three_rows_end_early), (
+            [(dt(1, 2, 2), 8.00)],
+            [dt(1, 2, 3)],
+        ))
